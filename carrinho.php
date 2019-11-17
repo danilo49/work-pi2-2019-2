@@ -7,6 +7,9 @@
         <script src="js/jquery.min.js"></script>
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="shortcut icon" href="images/favicon.ico" />
+        <link rel="stylesheet" type="text/css" href="carrinho.css">
+        <script src="carrinho.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
         <!--
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -17,18 +20,21 @@
 
     <?php
         session_start();
+        //session_destroy();
         if(!isset($_SESSION["produtos"])){
-
+            
         }
         else {
             $produtos = $_SESSION["produtos"];
-
-            foreach($produtos as $values){
-                echo $values['cod'];
-            }
+/*
+            foreach($produtos as $values)
+                echo 'CODIGO: ' .$values['id']. ' nome: ' . $values['nome']. 'preco: ' .$values['preco']. 
+                ' qtd: ' . $values['qtd'].'img: ' .$values['img']. ' categoria: ' . $values['categoria_fk'];
+                
+            */
         }
     ?>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+   
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="index.php"><h3>Chassis Ecommerce</h3></a>
@@ -42,16 +48,16 @@
                         <a class="nav-link" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="category.html">Categorias</a>
+                        <a class="nav-link" href="#">Categorias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="product.html">Produtos</a>
+                        <a class="nav-link" href="#">Produtos</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="contact.html">Carrinho<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="#">Carrinho<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contato</a>
+                        <a class="nav-link" href="contato.php">Contato</a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -87,38 +93,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Product Name Dada</td>
-                                <td>Em estoque</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">124,90 </td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Product Name Toto</td>
-                                <td>Em estoque</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">33,90 </td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Product Name Titi</td>
-                                <td>Em estoque</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">70,00 </td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Sub-Total</td>
-                                <td class="text-right">255,90 </td>
-                            </tr>
+                        
+                            <?php
+                            $total = 0;
+                                 if(!isset($_SESSION["produtos"])){
+                    
+                                }
+                                else {
+                                    $produtos = $_SESSION["produtos"];
+                                    
+                                    
+                                    foreach($produtos as $values){
+                                        ?>
+                                        <tr>
+                                            <td><a href="#"><img src="/images/<?echo $values['img'];?>" alt="" width="62" height="48"></a></td>
+                                            <td><? echo $values['nome'];?></td>
+                                            <td><? $estoque = $values['qtd'] !=0 ? "Em estoque":"Estoque esgotado"; 
+                                                        echo $estoque ?> </td>
+                                            <td><div class="quantity">
+                                                    <a href="#" class="quantity__minus"><span>-</span></a>
+                                                    <input name="<?php echo('quantity'.$values['id']);  ?>" type="text" class="quantity__input" value="1">
+                                                    <a href="#" class="quantity__plus"><span>+</span></a>
+                                                </div></td>
+                                            <td class="text-right"><? echo $values['preco'];
+                                                        $total += $values['preco'];?></td>
+                                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                                        </tr>
+                            <?php
+                                    }
+                                    
+                                }
+                            ?>
+
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -133,7 +139,7 @@
                                 <td></td>
                                 <td></td>
                                 <td><strong>Total</strong></td>
-                                <td class="text-right"><strong>346,90 </strong></td>
+                                <td class="text-right"><strong><?php echo (double)$total;?> </strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -141,10 +147,12 @@
             </div>
             <div class="col mb-2">
                 <div class="row">
-                    <div class="col-sm-12  col-md-6">
-                        <button class="btn btn-block btn-light">Continue Comprando</button>
+                    <div class="col-sm-12 col-md-5">
+                        <button class="btn btn-lg btn-block btn-secondary text-uppercase">Continue Comprando</button>
                     </div>
-                    <div class="col-sm-12 col-md-6 text-right">
+
+                
+                    <div class="col-sm-12 col-md-7   text-right float-right" >
                         <button class="btn btn-lg btn-block btn-success text-uppercase">Finalizar Compra</button>
                     </div>
                 </div>
@@ -152,7 +160,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer 
     <footer class="text-light">
         <div class="container">
             <div class="row">
@@ -195,14 +203,11 @@
                         <li><i class="fa fa-phone mr-2"></i> + 33 12 14 15 16</li>
                         <li><i class="fa fa-print mr-2"></i> + 33 12 14 15 16</li>
                     </ul>
-                </div>
+                </div>-->
                 <div class="col-12 copyright mt-3">
                     <p class="float-left">
                         <a href="#"><center>Voltar ao início</center></a>
                     </p>
-
-                    
-                
                 </div>
                 
             </div>

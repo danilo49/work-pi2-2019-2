@@ -16,8 +16,7 @@
 <body>
 <?php
 session_start();
-    $conexao = mysqli_connect
-        ("localhost", "root", "", "trabfinal", 3306);
+$conexao = mysqli_connect ("localhost", "root", "", "trabfinal", 3306);
 
     if($conexao){
        // echo "Conectei no BD!<br>";

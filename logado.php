@@ -22,9 +22,23 @@
                 $cpf = $_SESSION['cpf'];
                 //$nome = $_SESSION['nome'];
                 //echo"<script type='text/javascript'>alert($cpf);</script>";
+
+
+                $conexao = mysqli_connect ("localhost", "root", "", "trabfinal", 3306);
+                
+                $result = mysqli_query($conexao, "SELECT perfil_fk FROM usuarios where cpf = '$cpf'");
+                $perfil=$result->fetch_array();
+                $perfil=$perfil['perfil_fk'];
+            
+                 
             }
         ?>
     </head>
+  
+
+
+
+
     <body onload="viewData()">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
@@ -41,7 +55,7 @@
                 //session_start();
                 
                 
-                    $conexao = mysqli_connect ("localhost", "root", "", "trabfinal", 3306);
+                $conexao = mysqli_connect ("localhost", "root", "", "trabfinal", 3306);
     
                     $result = mysqli_query($conexao, "SELECT nome FROM usuarios where cpf = '$cpf'");
                     $nome=$result->fetch_array();
@@ -58,8 +72,15 @@
                             </a>
                             <div class="dropdown-menu active" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="logado.php">Home login</a>
-                                <a class="dropdown-item" href="cadProd.php">Cadastrar Produto</a>
-                                <a class="dropdown-item" href="prodCadastrados.php">Produtos Cadastrados</a>
+
+
+                                <?php
+                                    if($perfil == "Administrador" || $perfil == "Gerente"){
+                                        ?>
+
+                                        <a class="dropdown-item" href="cadProd.php">Cadastrar Produto</a>
+                                        <a class="dropdown-item" href="prodCadastrados.php">Produtos Cadastrados</a>
+                                    <?php } ?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="login.php?sair=ok">Sair</a>
                                 <?php 
@@ -77,6 +98,10 @@
             </div>
         </nav>
         <br><br><br>
+
+        <?php
+            if($perfil == "Administrador" || $perfil == "Gerente"){
+            ?>
         <div class="container">
             <h1><center>Usuários Cadastrados<center></h1>
             <table id="tabledit" class = "table table-bordered table-striped">
@@ -93,6 +118,8 @@
         </div>
 
         <script type="text/javascript">
+            
+            
             function viewData(){
                 $.ajax({
                     url: 'userCadastrados.php?p=view',
@@ -158,6 +185,8 @@
                 });
             }
         </script>
+            <?php }?>
+        
     </body>
 
 </html>

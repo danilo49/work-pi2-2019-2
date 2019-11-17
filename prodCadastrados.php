@@ -43,21 +43,16 @@
             </li>
             
             <?php 
-            //session_start();
-               
-            
+                //session_start();
+                
                 $conexao = mysqli_connect ("localhost", "root", "", "trabfinal", 3306);
- 
+    
                 $result = mysqli_query($conexao, "SELECT nome FROM usuarios where cpf = '$cpf'");
                 $nome=$result->fetch_array();
                 $_SESSION['nome']=$nome['nome'];
                 //echo"<script type='text/javascript'>alert( $nome);</script>";
            
            ?>
-
-            
-
-            
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
@@ -81,14 +76,7 @@
                         
                     </div>
                 </li>
-
-
-
-
-                
-               
                 </li>
-                
             </ul>
             </div>
         </div>
@@ -97,7 +85,7 @@
         <br>
         <br>
 
-        <div class="container">
+        <div class="container-fluid">
         <h1><center>Produtos cadastrados<center></h1>
         <form action="logado.php" id="form1" runat="server" method="post">
             <table border="3px" id="datatable" > <!--mesmo id da function-->
@@ -109,6 +97,7 @@
                         <th>Descrição</th>
                         <th>Preço</th>
                         <th>Qtd.</th>
+                        <th>Categoria</th>
                         
                     </tr>
                 </thead>
@@ -124,11 +113,12 @@
 
                                 echo '<tr>'
                                     .'<td><center>'. $values['id'] .'</center></td>'
-                                    .'<td>'. $values['imgProd'] .'</td>'
+                                    .'<td>'. $values['img'] .'</td>'
                                     .'<td>'.  $values['nome'] .'</td>'
                                     .'<td>'.  $values['descricao'] .'</td>'
                                     .'<td>'.  $values['preco'] .'</td>'
                                     .'<td>'.  $values['qtd'] .'</td>'
+                                    .'<td>'.  $values['categoria_fk'] .'</td>'
                                     
                                 .'</tr>';
 
