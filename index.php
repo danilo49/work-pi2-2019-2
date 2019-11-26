@@ -108,11 +108,76 @@
       </div>
 
     <?php
+     
+
       if(isset($_POST["id"])){
         $novo = array('id' => $_POST['id'],'nome'=> $_POST['nome'],'preco'=> $_POST['preco'],
         'qtd'=> $_POST['qtd'],'img'=> $_POST['img'],'categoria_fk'=> $_POST['categoria_fk'], );
-          if(isset($_SESSION["produtos"])){
+        
+        
+        if(!isset($_SESSION["produtos"])){
+         $produtos = array($novo);
+         
+        }else {
+          $jaExiste=0;
+          
+          //array_walk
+          $produtos = $_SESSION["produtos"];
+          
+          $index = count($produtos);
+          echo "Index:".$index;
+          echo "NOVO: ".$novo['id'];
+
+
+
+          for($i = 0 ; $i <= $index; $i++){
+            //echo "PRODUTOS: ".$produtos[$i]['id'];
+            if($produtos[$i]['id'] == $novo['id']){
+              //echo "QUANTIDADE: ".$produtos[$i]['qtd'];
+
+                $produtos[$i]['qtd'] += 1;
+                //echo "QUANTIDADE POS: ".$produtos[$i]['qtd'];
+                $jaExiste++;
+            }
+
+
+          }
+          /*foreach($produtos as $values){
+            //$produtos[0]['qtd'] = asdasd
+            $comma_separated = implode(",", $values);
+            $comma_separated1 = implode (",", $novo);
+
+
+            echo $comma_separated1;
+             $pieces = explode(",", $comma_separated);
+             echo $pieces[3];
+              
+              if(array_column($novo,'id') == array_column($values,'id')){
+                $qtd = array_column($values,'qtd');
+                //echo $qtd;
+                $qtd++;
+                $jaExiste++;
+              }
+                //array_walk($produtos, $qtd, array_column($values,'id'));
+               
+            }*/
             
+           
+           if($jaExiste==0){
+             $produtos = $_SESSION["produtos"];
+             array_push($produtos, $novo);
+             
+           }
+        }
+        $_SESSION["produtos"] = $produtos;
+        
+      }
+
+/*
+       if(isset($_POST["id"])){
+        $novo = array('id' => $_POST['id'],'nome'=> $_POST['nome'],'preco'=> $_POST['preco'],
+        'qtd'=> $_POST['qtd'],'img'=> $_POST['img'],'categoria_fk'=> $_POST['categoria_fk'], );
+          if(isset($_SESSION["produtos"])){
             $produtos = $_SESSION["produtos"];
             array_push($produtos, $novo);
           }else{
@@ -120,7 +185,9 @@
         }
         $_SESSION["produtos"] = $produtos;
         }
-      ?>  
+      ?>  */
+      
+      ?>
       
 <div class="row">
 
@@ -136,20 +203,20 @@ if($conexao){
       <form action="index.php" method="post" class="col-lg-4 col-md-6 mb-4">
         
           <div class="card h-100">
-            <a href="#"><img class="card-img-top" src="/images/<?echo $values['img'];?>" alt=""></a>
+            <a href="#"><img class="card-img-top" src="images/<?echo $values['img'];?>" alt=""></a>
             <div class="card-body">
               <h4 class="card-title">
                 <a href="#"><?echo $values['nome'];?></a>
               </h4>
               <h5><?echo $values['preco'];?></h5>
-              <input type="hidden" name="id" value="<?echo $values['id'];?>">
-              <input type="hidden" name="nome" value="<?echo $values['nome'];?>">
-              <input type="hidden" name="preco" value="<?echo $values['preco'];?>">
-              <input type="hidden" name="qtd" value="<?echo $values['qtd'];?>">
-              <input type="hidden" name="descricao" value="<?echo $values['descricao'];?>">
-              <input type="hidden" name="img" value="<?echo $values['img'];?>">
-              <input type="hidden" name="categoria_fk" value="<?echo $values['categoria_fk'];?>">
-              <p class="card-text"><?echo $values['descricao'];?></p>
+              <input type="hidden" name="id" value="<?php echo $values['id'];?>">
+              <input type="hidden" name="nome" value="<?php echo $values['nome'];?>">
+              <input type="hidden" name="preco" value="<?php echo $values['preco'];?>">
+              <input type="hidden" name="qtd" value="1">
+              <input type="hidden" name="descricao" value="<?php echo $values['descricao'];?>">
+              <input type="hidden" name="img" value="<?php echo $values['img'];?>">
+              <input type="hidden" name="categoria_fk" value="<?php echo $values['categoria_fk'];?>">
+              <p class="card-text"><?php echo $values['descricao'];?></p>
               <input type="submit" class="btn btn-success" value="Adicionar ao carrinho">
             </div>
             <div class="card-footer">

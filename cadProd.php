@@ -118,7 +118,7 @@
         <h4 class="card-title mt-2">Cadastro Produto</h4>
     </header>
     <article class="card-body">
-    <form action="cadProdPHP.php" method="post">
+    <form action="cadProdPHP.php" method="post" enctype="multipart/form-data">
         <div class="form-row">
             <div class="col form-group">
             <label>Nome do Produto</label>

@@ -113,7 +113,7 @@
 
                                 echo '<tr>'
                                     .'<td><center>'. $values['id'] .'</center></td>'
-                                    .'<td>'. $values['img'] .'</td>'
+                                    .'<td><a href="#"><img src="images/'.$values['img'].'" alt=""height="55" width="72"></a>'.'</td>'
                                     .'<td>'.  $values['nome'] .'</td>'
                                     .'<td>'.  $values['descricao'] .'</td>'
                                     .'<td>'.  $values['preco'] .'</td>'

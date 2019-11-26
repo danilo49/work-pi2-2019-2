@@ -1,54 +1,27 @@
 <html>
     <head>
-      <title>Chassis Shop Login</title>
-      <link href="css/bootstrap.min.css" rel="stylesheet">  
+    <title>Chassis Shop Login</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">  
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.min.js" type="text/javascript"></script>
       <script src="js/jquery.mask.min.js" type="text/javascript"></script>
       <script src="js/bootstrap-notify.min.js" type="text/javascript"></script>
-      <link rel="stylesheet" type="text/css" href="css/style.css">
-      <link rel="shortcut icon" href="images/favicon.ico" />
+      <link rel="stylesheet" type="text/css" href="style.css">
 
- 
-  
-<!--
 
-  
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet">  
-  <script src="js/jquery-3.4.1.js" type="text/javascript"></script>
-  
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    -->
-
-    <script type="text/javascript">
+      <script type="text/javascript">
     $(document).ready(function(){
       $('#cpf').mask('000.000.000-00');
     });
     </script>
-   
+
+
   </head>
 
   <body>
 
   <?php
-  session_start();
-  
-	if(!$_SESSION){
-
-	}
-    
-	else if($_SESSION['cadproduto']== 30){?>
-		<div class="alert alert-danger" role="alert"><center>
- 		  Está função está disponível somente para Administradores!</center>
-	</div><?php $_SESSION['cadproduto']=0;
-	}
-  
-  
-  ?>
+  session_start();?>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
@@ -59,13 +32,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-          <!--</li>
+          </li>
               <a class="nav-link" href="index.php">Home
               <span class="sr-only">(current)</span>
-              </a>-->
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="login.php">Login</a>
+              <a class="nav-link" href="loginSEMAJAX.php">Login</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="carrinho.php">Carrinho</a>
@@ -81,16 +54,12 @@
     <div class="row align-items-center h-100">
         <div class="col-3 mx-auto">
             <div class="text-center">
-              
-                <img id="profile-img" class="rounded-circle profile-img-card" src="images\login.jpg" />
+
+                <img id="profile-img" class="rounded-circle profile-img-card" src="https://i.imgur.com/6b6psnA.png" />
                 <p id="profile-name" class="profile-name-card"></p>
-                <h2>Chassis login</h2>
-                
-                <form id="meuform" >
-                
-                  <!--<input type="login" name="cpf" id="cpf" class="form-control form-group" placeholder="cpf" required autofocus>-->
-                  <input type="text" class="form-control form-group cpf-mask" name="cpf" id="cpf" placeholder="056.424.945-98" required autofocus>
-                  <input type="password" name="senha" id="inputPassword" class="form-control form-group" placeholder="password" required autofocus>
+                <form action="realizarLoginSEMAJAX.php" method="post">
+                <input type="login" name="cpf" id="cpf" class="form-control form-group" placeholder="cpf" required autofocus>
+                <input type="password" name="senha" id="inputPassword" class="form-control form-group" placeholder="password" required autofocus>
 
                 <?php
             
@@ -106,44 +75,25 @@
 
               }
               $_SESSION["login"] = $login;
+
             }
+            
           ?>
-          <script type="text/javascript">
 
-              
-            $(function(){
-              $("#meuform").submit(function(event){
-                event.preventDefault();
+        <a class = "float-right text-light bg-dark"href="novocadastro.php">Criar conta</a>
+          <button class="btn btn-lg btn-primary btn-block btn-signin " type="submit">Entrar</button>
+            </form><!-- /form -->
 
-                var dados_form = $(this).serialize();
-                $.ajax({
-                  type: "post",
-                  url: "realizarLogin.php",
-                  data: dados_form,
-                  success: function(responseData){
-                    //$("#mensagemDiv").html("SUCESSO! Resposta do servidor: <br/>" + responseData);
-                   
-                    window.location="logado.php";
-                    
-                  },
-                  error: function(request, status, error){
-                    $("#mensagemDiv").addClass("alert alert-danger").html("Erro! Resposta do servidor: <br/>" + request.responseText);
-                  }
-                });                
-              });
-            });
-            
-
-            </script>
-              <a class = "float-right text-primary"href="cadUser.php">Criar conta</a>
-                      <button class="btn btn-lg btn-primary btn-block btn-signin " type="submit" id="btnEnviar" >Entrar</button>
-                        </form><!-- /form -->
-                        <div  class="text-danger" id="mensagemDiv"></div>
                         
-            
+            <?php
+              if(isset($_POST["msg"])){
+
+               // $msg = $_SESSION['msg'];
+                echo "<div class='alert alert-danger' role='alert'>CPF ou senha incorretos!</div>";
+              }
+            ?>
 
             </div>
-            
         </div>
       </div>
     </div>

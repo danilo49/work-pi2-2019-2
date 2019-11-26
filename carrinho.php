@@ -21,11 +21,14 @@
     <?php
         session_start();
         //session_destroy();
+        $qtdproduto=0;
         if(!isset($_SESSION["produtos"])){
             
         }
         else {
             $produtos = $_SESSION["produtos"];
+            foreach($produtos as $values)
+                $qtdproduto++;
 /*
             foreach($produtos as $values)
                 echo 'CODIGO: ' .$values['id']. ' nome: ' . $values['nome']. 'preco: ' .$values['preco']. 
@@ -37,7 +40,7 @@
    
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php"><h3>Chassis Ecommerce</h3></a>
+            <a class="navbar-brand" href="index.php"><h3>Chassis E-commerce</h3></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -63,9 +66,9 @@
                 <form class="form-inline my-2 my-lg-0">
                     <div class="input-group input-group-sm">
                     </div>
-                    <a class="btn btn-success btn-sm ml-3" href="cart.html">
+                    <a class="btn btn-success btn-sm ml-3" href="#">
                         <i class="fa fa-shopping-cart"></i> Carrinho
-                        <span class="badge badge-light">3</span>
+                        <span class="badge badge-light"><? echo $qtdproduto;?></span>
                     </a>
                 </form>
             </div>
@@ -81,14 +84,14 @@
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="table1">
                         <thead>
                             <tr>
                                 <th scope="col"> </th>
                                 <th scope="col">Produto(s)</th>
-                                <th scope="col">Acessível</th>
+                                <th scope="col" >Acessível</th>
                                 <th scope="col" class="text-center">Quantidade</th>
-                                <th scope="col" class="text-right">Preço</th>
+                                <th scope="col" class="text-center">Preço</th>
                                 <th> </th>
                             </tr>
                         </thead>
@@ -103,21 +106,26 @@
                                     $produtos = $_SESSION["produtos"];
                                     
                                     
-                                    foreach($produtos as $values){
-                                        ?>
+                                    foreach($produtos as $id=>$values){
+                                      $aux="";
+
+                                      $aux=($id%2==0)?"background-color: rgba(0,0,0,0)" : "background-color: #fff;";
+                                       ?>
                                         <tr>
-                                            <td><a href="#"><img src="/images/<?echo $values['img'];?>" alt="" width="62" height="48"></a></td>
-                                            <td><? echo $values['nome'];?></td>
-                                            <td><? $estoque = $values['qtd'] !=0 ? "Em estoque":"Estoque esgotado"; 
+                                            <td><a href="#"><img src="images/<?php echo $values['img'];?>" alt="" width="62" height="48"></a></td>
+                                            <td><br><?php echo $values['nome'];?></td>
+                                            <td><br><?php $estoque = $values['qtd'] !=0 ? "Em estoque":"Estoque esgotado"; 
                                                         echo $estoque ?> </td>
-                                            <td><div class="quantity">
-                                                    <a href="#" class="quantity__minus"><span>-</span></a>
-                                                    <input name="<?php echo('quantity'.$values['id']);  ?>" type="text" class="quantity__input" value="1">
-                                                    <a href="#" class="quantity__plus"><span>+</span></a>
+                                            <td><br><div class="quantity">
+                                                <a href="#" id="<?php echo('quantity__minus'.$values['id']);?>" class="quantity__minus" onclick="diminuir('<?php echo $values['id']; ?>','<?php echo $values['preco']; ?>')"><span>-</span></a>
+                                                <input id="<?php echo('quantity'.$values['id']);?>" disabled type="text" class="quantity__input" value="<?php echo $values['qtd']?>">
+                                                    <a href="#" id="<?php echo('quantity__minus'.$values['id']);?>" class="quantity__plus" onclick="aumentar('<?php echo $values['id']; ?>','<?php echo $values['preco']; ?>')"><span>+</span></a>
                                                 </div></td>
-                                            <td class="text-right"><? echo $values['preco'];
-                                                        $total += $values['preco'];?></td>
-                                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                                            <td><br> 
+                                                <input id="<?php echo('price'.$values['id']);?>" style="<?php echo $aux;?>" disabled type="text" class="price" value="<?php echo "R$ ".$values['preco'];?>">
+                                                        
+                                                        </td>
+                                            <td id="<?php echo $values['id'];?>"class="text-left"><br><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></button></td>
                                         </tr>
                             <?php
                                     }
@@ -125,21 +133,21 @@
                                 }
                             ?>
 
-                            <tr>
+                            <!--<tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>Frete</td>
                                 <td class="text-right">6,90 </td>
-                            </tr>
+                            </tr>-->
                             <tr>
+                                <td>    </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td><strong>Total</strong></td>
-                                <td class="text-right"><strong><?php echo (double)$total;?> </strong></td>
+                                <td><strong>TOTAL</strong></td>
+                                <td class="text-right"><strong><?php echo "R$ ".(double)$total;?> </strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -148,7 +156,7 @@
             <div class="col mb-2">
                 <div class="row">
                     <div class="col-sm-12 col-md-5">
-                        <button class="btn btn-lg btn-block btn-secondary text-uppercase">Continue Comprando</button>
+                        <a class="btn btn-lg btn-block btn-secondary text-uppercase" href="index.php">Continue Comprando</a>
                     </div>
 
                 

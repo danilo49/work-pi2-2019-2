@@ -35,10 +35,7 @@
         ?>
     </head>
   
-
-
-
-
+            
     <body onload="viewData()">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
@@ -136,7 +133,7 @@
                     ediButton: true,
                     deleteButton: true,
                     //hideIndentifier: false,
-                    /*buttons: {
+                    /*\\buttons: {
                         edit: {
                             class: 'btn btn-sm btn-warning',
                             html: '<span class="glyphicon glyphicon-pencil">Edit</span> Editar',
@@ -185,7 +182,7 @@
                 });
             }
         </script>
-            <?php }?>
+        <?php }?>
         
     </body>
 
